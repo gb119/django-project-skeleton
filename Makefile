@@ -1,34 +1,34 @@
-.SILENT:
-.PHONY: all clean current doc doc-srv serve tox
+PYTHON_SETUP	=	python setup.py
+BRANCH	=	`pwd | tail -c 5`
+SITE	=	$(notdir $(CURDIR))
 
+isort:
+	find . -name '*.py' | xargs isort --profile django
 
-all:
-	echo ""
-	echo "  clean        Removes all temporary files"
-	echo "  current      Runs the tox-environment for the current development"
-	echo "  doc          Builds the documentation using 'Sphinx'"
-	echo "  doc-srv      Serves the documentation on port 8082 (and automatically builds it)"
-	echo "  serve        Runs the Django development server on port 8080"
-	echo "  tox          Runs complete tox test"
-	echo ""
+spell:
+	-find . -name '*.py' | xargs codespell -w
 
+black: isort
+	find . -name '*.py' | xargs black -l 119
 
-# deletes all temporary files created by Django
-clean:
-	find . -iname "*.pyc" -delete
-	find . -iname "__pycache__" -delete
+djhtml:
+	djhtml apps/ templates/
 
-current:
-	tox -q -e util
+check:
+	python manage.py check
 
-doc:
-	tox -q -e doc
+commit:	_commit restart
 
-doc-srv: doc
-	tox -q -e doc-srv
+_commit: permissions spell isort black check restart
+	git add apps/
+	git commit -a
+	git push origin ${BRANCH}
 
-serve:
-	tox -q -e run
+permissions:
+	setfacl --set-file=configs/acls.txt -R apps/
+	setfacl --set-file=configs/acls.txt -R phas${BRANCH}/
 
-tox:
-	tox -q
+restart: permissions
+	sudo systemctl restart ${SITE}
+
+FORCE:

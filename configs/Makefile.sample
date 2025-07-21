@@ -3,7 +3,7 @@ PYTHONPATH := $(LOCALPATH)/
 PYTHON_BIN := $(VIRTUAL_ENV)/bin
 
 DJANGO_TEST_SETTINGS_FILE := development
-DJANGO_TEST_SETTINGS := {{ project_name }}.settings.$(DJANGO_TEST_SETTINGS_FILE)
+DJANGO_TEST_SETTINGS := {{ {{ project_name }} }}.settings.$(DJANGO_TEST_SETTINGS_FILE)
 DJANGO_TEST_POSTFIX := --settings=$(DJANGO_TEST_SETTINGS) --pythonpath=$(PYTHONPATH)
 
 

@@ -35,12 +35,7 @@ Usage
 To use this repository just use the ``template`` option of `django-admin
 <https://docs.djangoproject.com/en/2.2/ref/django-admin/#startproject>`_::
 
-    $ django-admin startproject --template=https://github.com/gb119/django-project-skeleton/archive/development.zip --name apache2_vhost.sample [projectname]
-
-If you wish to automagically fill the ``apache2_vhost.sample`` the command is::
-
-    $ django-admin startproject --template=https://github.com/Mischback/django-project-skeleton/archive/development.zip --name apache2_vhost.sample [projectname]
-
+    $ django-admin startproject --template=https://github.com/gb119/django-project-skeleton/archive/development.zip --extensions py,sh,sql,service,conf,txt -name Makefile  [projectname]
 
 Documentation
 -------------
